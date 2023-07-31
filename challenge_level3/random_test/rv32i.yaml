@@ -23,7 +23,7 @@ priv-mode:
 #                           
 # ---------------------------------------------------------------------------------
 general:
-  total_instructions: 2
+  total_instructions: 200
   regs_not_use: x1,x2
   custom_trap_handler: false
   code_start_address: 0x80000000
