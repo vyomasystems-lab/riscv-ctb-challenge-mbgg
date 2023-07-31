@@ -1,4 +1,4 @@
-challenge_level1/chanllenge3: fix illegal instruction trap
+# Fix illegal instruction trap
 
 The code implements a mtvec_handler, that is weakly defined in
 RVTEST_CODE_BEGIN macro. One a illegal instruction is executed the
@@ -26,30 +26,30 @@ trapped the illegal instruction and can end the test. If the illegal
 instruction wasn't executed from our label, something else in the test
 is wrong and we error out jumping to label fail.
 
-diff --git a/challenge_level1/challenge3_illegal/test.S b/challenge_level1/challenge3_illegal/test.S
-index 42ce0de..6d24ae9 100644
---- a/challenge_level1/challenge3_illegal/test.S
-+++ b/challenge_level1/challenge3_illegal/test.S
-@@ -13,7 +13,9 @@ RVTEST_CODE_BEGIN
- illegal_instruction:
-   .word 0              
-   j fail
--  TEST_PASSFAIL
-+end_test:
-+
-+TEST_PASSFAIL
- 
-   .align 8
-   .global mtvec_handler
-@@ -22,8 +24,10 @@ mtvec_handler:
-   csrr t0, mcause
-   bne t0, t1, fail
-   csrr t0, mepc
-+  la t1, illegal_instruction
-+  beq t0, t1, end_test		# check if illegal instruction from test case
-+  j fail
- 
--  mret
- 
- RVTEST_CODE_END
+    diff --git a/challenge_level1/challenge3_illegal/test.S b/challenge_level1/challenge3_illegal/test.S
+    index 42ce0de..6d24ae9 100644
+    --- a/challenge_level1/challenge3_illegal/test.S
+    +++ b/challenge_level1/challenge3_illegal/test.S
+    @@ -13,7 +13,9 @@ RVTEST_CODE_BEGIN
+     illegal_instruction:
+       .word 0              
+       j fail
+    -  TEST_PASSFAIL
+    +end_test:
+    +
+    +TEST_PASSFAIL
+     
+       .align 8
+       .global mtvec_handler
+    @@ -22,8 +24,10 @@ mtvec_handler:
+       csrr t0, mcause
+       bne t0, t1, fail
+       csrr t0, mepc
+    +  la t1, illegal_instruction
+    +  beq t0, t1, end_test		# check if illegal instruction from test case
+    +  j fail
+     
+    -  mret
+     
+     RVTEST_CODE_END
  
